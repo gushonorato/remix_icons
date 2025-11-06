@@ -1,6 +1,9 @@
 defmodule RemixIcons do
   use Phoenix.Component
 
+  attr :name, :string, required: true
+  attr :class, :string, default: "w-4 h-4"
+
   def icon(%{name: icon_name} = assigns) do
     cache_result =
       Cachex.fetch(:icons, "__remix_icons__/#{icon_name}", fn ->
@@ -17,7 +20,9 @@ defmodule RemixIcons do
         assigns = assign(assigns, :svg_content, File.read!(filename))
 
         ~H"""
-        {Phoenix.HTML.raw(@svg_content)}
+        <span class={@class}>
+          {Phoenix.HTML.raw(@svg_content)}
+        </span>
         """
       end)
 
