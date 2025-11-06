@@ -27,6 +27,9 @@ defmodule RemixIcons do
 
       {:commit, template} ->
         template
+
+      {:error, error} ->
+        raise error
     end
   end
 end
