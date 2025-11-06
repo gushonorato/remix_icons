@@ -4,7 +4,7 @@ defmodule RemixIcons do
   def icon(%{name: icon_name} = assigns) do
     cache_result =
       Cachex.fetch(:icons, "__remix_icons__/#{icon_name}", fn ->
-        icons_path = Path.join([:code.priv_dir(:remix_icons), "icons"])
+        icons_path = Path.join([:code.priv_dir(:remix_icons), "remix", "icons"])
         svg_files = Path.wildcard(Path.join(icons_path, "**/*.svg"))
 
         filename =
