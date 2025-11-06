@@ -14,7 +14,8 @@ defmodule RemixIcons.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {RemixIcons.Application, []}
     ]
   end
 
@@ -24,7 +25,7 @@ defmodule RemixIcons.MixProject do
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:phoenix_live_view, ">= 0.0.0"},
-      {:cachex, "~> 4.1"}
+      {:cachex, ">= 0.0.0"}
     ]
   end
 end
