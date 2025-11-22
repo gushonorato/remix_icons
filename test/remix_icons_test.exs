@@ -4,6 +4,7 @@ defmodule RemixIconsTest do
 
   setup do
     # Clear the cache before each test
+    start_supervised(RemixIcons.cache())
     Cachex.clear(:icons)
     :ok
   end

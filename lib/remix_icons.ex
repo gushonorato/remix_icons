@@ -1,6 +1,8 @@
 defmodule RemixIcons do
   use Phoenix.Component
 
+  import Cachex.Spec
+
   attr :name, :string, required: true
 
   def icon(%{name: icon_name} = assigns) do
@@ -33,5 +35,9 @@ defmodule RemixIcons do
       {:error, error} ->
         raise error
     end
+  end
+
+  def cache() do
+    {Cachex, [:icons, [expiration: expiration(lazy: false, interval: nil)]]}
   end
 end
