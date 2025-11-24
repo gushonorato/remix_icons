@@ -8,7 +8,7 @@ defmodule RemixIcons do
   def icon(%{name: icon_name} = assigns) do
     cache_result =
       Cachex.fetch(:icons, "__remix_icons__/#{icon_name}", fn ->
-        icons_path = Path.join([:code.priv_dir(:remix_icons), "remix", "icons"])
+        icons_path = Path.join([:code.priv_dir(:remix_icons), "icons"])
 
         # Verifica se o diretório existe
         unless File.exists?(icons_path) do

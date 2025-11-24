@@ -33,16 +33,13 @@ defmodule RemixIcons.MixProject do
 
   defp aliases do
     [
-      remix_clone: &remix_clone/1,
+      remix_download: &remix_download/1,
       remix_clean: &remix_clean/1,
-      compile: ["remix_clone", "compile"]
+      compile: ["remix_download", "compile"]
     ]
   end
 
-  defp remix_clone(_) do
-    if not File.exists?("priv/remix") do
-      System.cmd("git", ["clone", "git@github.com:Remix-Design/RemixIcon.git", "priv/remix"])
-    end
+  defp remix_download(_) do
   end
 
   defp remix_clean(_) do
