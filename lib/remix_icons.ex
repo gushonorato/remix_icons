@@ -9,6 +9,12 @@ defmodule RemixIcons do
     cache_result =
       Cachex.fetch(:icons, "__remix_icons__/#{icon_name}", fn ->
         icons_path = Path.join([:code.priv_dir(:remix_icons), "remix", "icons"])
+
+        # Verifica se o diretório existe
+        unless File.exists?(icons_path) do
+          raise "Icons directory not found at #{icons_path}. Make sure priv/ files are included in the package."
+        end
+
         svg_files = Path.wildcard(Path.join(icons_path, "**/*.svg"))
 
         filename =
@@ -16,7 +22,9 @@ defmodule RemixIcons do
             icon_name == Path.basename(svg_file, ".svg")
           end)
 
-        if is_nil(filename), do: raise("Icon #{icon_name} not found")
+        if is_nil(filename) do
+          raise "Icon #{icon_name} not found in #{icons_path}"
+        end
 
         assigns = assign(assigns, :svg_content, File.read!(filename))
 
