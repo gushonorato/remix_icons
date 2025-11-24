@@ -8,7 +8,16 @@ defmodule RemixIcons.MixProject do
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      package: package()
+    ]
+  end
+
+  defp package do
+    [
+      files: ["lib", "priv", "mix.exs", "README.md"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/Remix-Design/RemixIcon"}
     ]
   end
 
