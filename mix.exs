@@ -1,6 +1,8 @@
 defmodule RemixIcons.MixProject do
   use Mix.Project
 
+  @remix_icon_version "4.7.0"
+
   def project do
     [
       app: :remix_icons,
@@ -40,9 +42,61 @@ defmodule RemixIcons.MixProject do
   end
 
   defp remix_download(_) do
+    icons_path = Path.join(["priv", "icons"])
+
+    if File.exists?(icons_path) do
+      Mix.shell().info("Icons already downloaded at #{icons_path}")
+    else
+      Mix.shell().info("Downloading Remix Icons v#{@remix_icon_version}...")
+
+      url = "https://github.com/Remix-Design/RemixIcon/archive/refs/tags/v#{@remix_icon_version}.zip"
+      zip_path = Path.join(["priv", "remix_icons.zip"])
+      extract_path = Path.join(["priv"])
+
+      File.mkdir_p!("priv")
+
+      case download_file(url, zip_path) do
+        :ok ->
+          Mix.shell().info("Extracting icons...")
+          {:ok, _} = :zip.unzip(String.to_charlist(zip_path), [{:cwd, String.to_charlist(extract_path)}])
+
+          extracted_icons_path = Path.join([extract_path, "RemixIcon-#{@remix_icon_version}", "icons"])
+          File.rename!(extracted_icons_path, icons_path)
+
+          File.rm!(zip_path)
+          File.rm_rf!(Path.join([extract_path, "RemixIcon-#{@remix_icon_version}"]))
+
+          Mix.shell().info("Icons downloaded successfully to #{icons_path}")
+
+        {:error, reason} ->
+          Mix.raise("Failed to download icons: #{inspect(reason)}")
+      end
+    end
+  end
+
+  defp download_file(url, dest) do
+    Application.ensure_all_started(:inets)
+    Application.ensure_all_started(:ssl)
+
+    case :httpc.request(:get, {String.to_charlist(url), []}, [ssl: [verify: :verify_none]], []) do
+      {:ok, {{_, 302, _}, headers, _}} ->
+        location = :proplists.get_value(~c"location", headers)
+        download_file(to_string(location), dest)
+
+      {:ok, {{_, 200, _}, _, body}} ->
+        File.write!(dest, body)
+        :ok
+
+      {:ok, {{_, status_code, _}, _, _}} ->
+        {:error, "HTTP status #{status_code}"}
+
+      {:error, reason} ->
+        {:error, reason}
+    end
   end
 
   defp remix_clean(_) do
-    System.cmd("rm", ["-rf", "priv/remix"])
+    File.rm_rf!("priv/icons")
+    Mix.shell().info("Icons cleaned from priv/icons")
   end
 end
