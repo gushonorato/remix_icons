@@ -6,7 +6,7 @@ defmodule RemixIcons.MixProject do
   def project do
     [
       app: :remix_icons,
-      version: "0.1.0",
+      version: @remix_icon_version,
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -17,6 +17,8 @@ defmodule RemixIcons.MixProject do
 
   defp package do
     [
+      description:
+        "A Phoenix LiveView component library for using Remix Icons with over 2,800 pixel-perfect icons, automatic SVG downloading, and built-in caching",
       files: ["lib", "priv", "mix.exs", "README.md"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/Remix-Design/RemixIcon"}
@@ -29,15 +31,15 @@ defmodule RemixIcons.MixProject do
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:phoenix_live_view, ">= 0.0.0"},
-      {:cachex, ">= 0.0.0"}
+      {:cachex, ">= 0.0.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
   defp aliases do
     [
       remix_download: &remix_download/1,
-      remix_clean: &remix_clean/1,
-      compile: ["remix_download", "compile"]
+      remix_clean: &remix_clean/1
     ]
   end
 
