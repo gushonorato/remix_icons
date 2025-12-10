@@ -2,6 +2,7 @@ defmodule RemixIcons do
   use Phoenix.Component
 
   import Cachex.Spec
+  require Logger
 
   attr :name, :string, required: true
 
@@ -32,6 +33,8 @@ defmodule RemixIcons do
         {Phoenix.HTML.raw(@svg_content)}
         """
       end)
+
+    Logger.debug("cache_result: #{inspect(cache_result)}")
 
     case cache_result do
       {:ok, template} ->

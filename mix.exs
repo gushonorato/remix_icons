@@ -49,7 +49,9 @@ defmodule RemixIcons.MixProject do
     else
       Mix.shell().info("Downloading Remix Icons v#{@remix_icon_version}...")
 
-      url = "https://github.com/Remix-Design/RemixIcon/archive/refs/tags/v#{@remix_icon_version}.zip"
+      url =
+        "https://github.com/Remix-Design/RemixIcon/archive/refs/tags/v#{@remix_icon_version}.zip"
+
       zip_path = Path.join(["priv", "remix_icons.zip"])
       extract_path = Path.join(["priv"])
 
@@ -58,9 +60,13 @@ defmodule RemixIcons.MixProject do
       case download_file(url, zip_path) do
         :ok ->
           Mix.shell().info("Extracting icons...")
-          {:ok, _} = :zip.unzip(String.to_charlist(zip_path), [{:cwd, String.to_charlist(extract_path)}])
 
-          extracted_icons_path = Path.join([extract_path, "RemixIcon-#{@remix_icon_version}", "icons"])
+          {:ok, _} =
+            :zip.unzip(String.to_charlist(zip_path), [{:cwd, String.to_charlist(extract_path)}])
+
+          extracted_icons_path =
+            Path.join([extract_path, "RemixIcon-#{@remix_icon_version}", "icons"])
+
           File.rename!(extracted_icons_path, icons_path)
 
           File.rm!(zip_path)
